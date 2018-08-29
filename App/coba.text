@@ -1,0 +1,53 @@
+view project implementation new  -   vprojectimplementationnew
+
+
+    CREATE VIEW vprojectimplementationnew AS
+	
+	SELECT 
+    project.id,project.proc,project.ubis,project.no_doc,project.projectid,
+    project.sitename,project.siteid,project.area,project.regional,
+    project.cluster,project.mitra,project.kode_tower_depan,
+    project.tower,project.kode_tower_belakang,
+    project.budget,project.sis,project.sitac,project.imb,project.imb_jasa,
+    project.qty_lahan,project.lahan,project.biayatower,
+    project.cme,project.pln,project.addtransport,project.addpln,
+    project.addcme,project.longitude,project.latituted,project.infratype,
+    project.towerprovider,project.provinsi,project.kabupaten,
+    project.status_id,project.filename,project.status,
+project.regional as regionalnya, project.cluster as clusternya , project.tower as towernya,
+    
+	CASE WHEN infratype = 'UNTAPPED' 
+    THEN 
+   (IFNULL(project.sis,0)+IFNULL(project.sitac,0)+IFNULL(project.imb,0)+IFNULL(project.imb_jasa,0)+IFNULL((project.qty_lahan*project.lahan),0)+IFNULL(project.biayatower,0)+IFNULL(project.cme,0)+IFNULL(project.pln,0)+IFNULL(project.addtransport,0)+IFNULL(project.addpln,0)+IFNULL(project.addcme,0))
+    ELSE 
+    (IFNULL((select total from vprojectimplementationstandardnew where regional=regionalnya AND cluster=clusternya AND tower=towernya),0)+IFNULL(project.sis,0)+IFNULL(project.sitac,0)+IFNULL(project.imb,0)+IFNULL(project.imb_jasa,0)+IFNULL((project.qty_lahan*project.lahan),0)+IFNULL(project.biayatower,0)+IFNULL(project.cme,0)+IFNULL(project.pln,0)+IFNULL(project.addtransport,0)+IFNULL(project.addpln,0)+IFNULL(project.addcme,0)) 
+    END 
+	AS capex,
+
+
+    project.created_at,project.updated_at
+
+    
+    FROM project where project.status='NEW'
+	
+	
+	
+	
+	
+	view project implementation standard new  -   vprojectimplementationstandardnew
+
+CREATE VIEW vprojectimplementationstandardnew AS
+SELECT id, regional,cluster,tower,tonase,pondasi,biayatower,erection_tower,
+transportasi,pondasi_greenfiled,bts_outdoor,me,fy,pln_connect,
+((tonase * biayatower)+(pondasi_greenfiled*pondasi)+erection_tower+transportasi+bts_outdoor+me+fy+pln_connect) AS total,
+created_at
+FROM standartimplementation
+
+
+
+CREATE VIEW vplafon_capex_regional_semua AS
+SELECT infratype,regional, IFNULL(sum(budget),0) as budgetNya, IFNULL(sum(capex),0) as capexNya,count(regional)as total
+FROM vprojectimplementation
+where status='FINISH'
+GROUP by infratype,regional
+
