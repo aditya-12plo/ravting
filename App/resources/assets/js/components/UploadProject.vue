@@ -9,7 +9,7 @@
     </section>
 
 <div class="container-fluid display-page" id="display-post-category" >
- <!-- @create Modal--->
+ <!-- @create Modal -->
         <modal  v-if="modal.get('create')" @close="modal.set('create', false)" >
         <template slot="header" ><h4>Form Penambahan Project Baru</h4></template>
         <template slot="body" >
@@ -396,7 +396,7 @@
         </template>
         </modal>
 
-<!-- @upload Modal--->
+<!-- @upload Modal -->
         <modal  v-if="modal.get('upload')" @close="modal.set('upload', false)" >
         <template slot="header" ><h4>Upload Penambahan Project Baru</h4></template>
         <template slot="body" >
@@ -738,7 +738,7 @@
         </modal>
 
 
-<!-- @update --->
+<!-- @update -->
         <modal  v-if="modal.get('edit')" @close="modal.set('edit', false)"  >
         <template slot="header" ><h4>Form Perubahan Data Project</h4></template>
         <template slot="body" >
@@ -751,7 +751,7 @@
 	
 					 <div class="col-sm-12">
  
-
+ <div class="col-sm-6">
                     <!-- form Group -->
                     <div class="form-group">
                         <label for="projectid">Project ID</label>
@@ -759,6 +759,20 @@
                         <span class="label label-danger" v-for="error of errorNya['projectid']">
                         {{ error }}
                     </span>
+ </div>
+ </div>
+ <div class="col-sm-6">
+                    <!-- form Group -->
+                    <div class="form-group">
+                        <label for="email">Project Status :  </label>
+<select class="form-control border-input" v-model="forms.status" required >
+            <option value="">Pilih Satu</option>
+            <option v-for="pilihan in statusProject" :value="pilihan">{{ pilihan }}</option>
+            </select>
+            <span class="label label-danger" v-for="error of errorNya['status']">
+                        {{ error }}
+                    </span>
+ </div>
  </div>
  
  <div class="col-sm-6">
@@ -1124,7 +1138,7 @@
         </modal>
 
 
- <!-- @delete --->
+ <!-- @delete -->
         <modal v-if="modal.get('delete')" @close="modal.set('delete', false)"  >
         <template slot="header" ><h4>Hapus Data Project</h4></template>
         <template slot="body" >
@@ -1425,8 +1439,9 @@ export default {
     formErrors:{},
 	file_name:'',
 	pilihan: ['UNTAPPED','B2S'],
+    statusProject: ['NEW','CANCEL'],
     errors: new Errors() ,
-    forms:new CrudForm({index:'',  id:'' , tinggitower:'' , proc:'' ,  ubis:'' , projectid:'' , sitename:'', siteid:'' , area:'', regional:'', cluster:'', kode_tower_depan:'' ,  tower:''  ,  kode_tower_belakang:'' , longitude:'' , latituted:'' , towerprovider:''  , infratype:'' , budget:'' ,  sis:'' ,  sitac:'' ,  imb:'' , imb_jasa:'' ,  cme:'' ,   pln:'' ,   addtransport:'' ,  addpln:'' ,   lahan:'' ,   addcme:'' ,  biayatower:'' , provinsi:''  , kabupaten:''  , mitra:'' , created_at:''}) ,
+    forms:new CrudForm({index:'',  id:'' , tinggitower:'' , proc:'' ,  ubis:'' , projectid:'' , sitename:'', siteid:'' , area:'', regional:'', cluster:'', kode_tower_depan:'' ,  tower:''  ,  kode_tower_belakang:'' , longitude:'' , latituted:'' , towerprovider:''  , infratype:'' , budget:'' ,  sis:'' ,  sitac:'' ,  imb:'' , imb_jasa:'' ,  cme:'' ,   pln:'' ,   addtransport:'' ,  addpln:'' ,   lahan:'' ,   addcme:'' ,  biayatower:'' , provinsi:''  , kabupaten:''  , mitra:'', status:'' , created_at:''}) ,
     modal:new CrudModal({create:false , view:false  , edit:false , delete:false  , upload:false }),
      errorNya: [],
      token: localStorage.getItem('token'),

@@ -9,14 +9,14 @@
   <meta http-equiv="author" content="@adit_xxx_">
   <meta name="csrf-token" content="{{ csrf_token() }}">
 
-   <link rel="stylesheet" href="{{asset('/public/AdminLTE/bootstrap/css/bootstrap.min.css')}}">
+   <link rel="stylesheet" href="{{asset('/AdminLTE/bootstrap/css/bootstrap.min.css')}}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
-  <link rel="stylesheet" href="{{asset('public/AdminLTE/dist/css/AdminLTE.min.css')}}">
-  <link rel="stylesheet" href="{{asset('public/AdminLTE/dist/css/skins/_all-skins.min.css')}}">
+  <link rel="stylesheet" href="{{asset('/AdminLTE/dist/css/AdminLTE.min.css')}}">
+  <link rel="stylesheet" href="{{asset('/AdminLTE/dist/css/skins/_all-skins.min.css')}}">
 
-  <link rel="stylesheet" href="{{asset('public/css/custom.css')}}">
-<link rel="stylesheet" href="{{ asset('public/css/app.css') }}">
+  <link rel="stylesheet" href="{{asset('/css/custom.css')}}">
+<link rel="stylesheet" href="{{ asset('/css/app.css') }}">
 
 <script src="//www.amcharts.com/lib/3/amcharts.js"></script>
 <script src="//www.amcharts.com/lib/3/pie.js"></script>
@@ -616,23 +616,23 @@
             'csrfToken' => csrf_token(),
         ]); ?>
 </script>
-<script src="{{ asset('public/js/app.js') }}"></script>
+<script src="{{ asset('/js/app.js') }}"></script>
 
 
 <!-- jQuery 2.2.3 -->
-<script src="{{asset('public/AdminLTE/plugins/jQuery/jquery-2.2.3.min.js')}}"></script>
+<script src="{{asset('/AdminLTE/plugins/jQuery/jquery-2.2.3.min.js')}}"></script>
 
 
-<script src="{{asset('public/AdminLTE/bootstrap/js/bootstrap.min.js')}}"></script>
+<script src="{{asset('/AdminLTE/bootstrap/js/bootstrap.min.js')}}"></script>
 
 <!-- SlimScroll -->
-<script src="{{asset('public/AdminLTE/plugins/slimScroll/jquery.slimscroll.min.js')}}"></script>
+<script src="{{asset('/AdminLTE/plugins/slimScroll/jquery.slimscroll.min.js')}}"></script>
 <!-- FastClick -->
-<script src="{{asset('public/AdminLTE/plugins/fastclick/fastclick.js')}}"></script>
+<script src="{{asset('/AdminLTE/plugins/fastclick/fastclick.js')}}"></script>
 <!-- AdminLTE App -->
-<script src="{{asset('public/AdminLTE/dist/js/app.min.js')}}"></script>
+<script src="{{asset('/AdminLTE/dist/js/app.min.js')}}"></script>
 <!-- AdminLTE for demo purposes -->
-<script src="{{asset('public/AdminLTE/dist/js/demo.js')}}"></script>
+<script src="{{asset('/AdminLTE/dist/js/demo.js')}}"></script>
 
 @include('vendor.roksta.toastr')
 

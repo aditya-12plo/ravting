@@ -704,7 +704,7 @@ return response()->json(['success'=>'Data Berhasil Di Rubah']);
             $query = DB::table('project')
  ->select('id', 'projectid','proc','ubis', 'sitename', 'siteid', 
  'area','regional', 'cluster','kode_tower_depan','tower','kode_tower_belakang', DB::raw('CONCAT(kode_tower_depan, " ", tower," ",kode_tower_belakang) AS tinggitower'), 
- 'mitra','longitude','latituted','infratype','towerprovider', 'provinsi', 'kabupaten','budget','sis','sitac','imb','imb_jasa','lahan','biayatower',
+ 'mitra','longitude','latituted','infratype','towerprovider', 'provinsi', 'kabupaten','budget','sis','sitac','imb','imb_jasa','lahan','biayatower','status',
  'created_at')
  ->where('status','NEW')
  ->orderBy('id','DESC');
@@ -905,12 +905,13 @@ return response()->json(['success'=>'Penambahan Data Project Berhasil']);
         'addpln' => 'required|numeric',
         'addcme' => 'required|numeric',
         'lahan' => 'required|numeric',
+        'status' => 'required|in:NEW,CANCEL',
     ]);
 		
 	   
          if(!$valid)
 		 {
-Project::where('id',$id)->update(['projectid'=>strtoupper(Input::get('projectid')),'mitra'=>strtoupper(Input::get('mitra')),'proc'=>strtoupper(Input::get('proc')),'ubis'=>strtoupper(Input::get('ubis')),'sitename'=>strtoupper(Input::get('sitename')),'siteid'=>strtoupper(Input::get('siteid')),'kabupaten'=>strtoupper(Input::get('kabupaten')),'provinsi'=>strtoupper(Input::get('provinsi')),'latituted'=>Input::get('latituted'),'longitude'=>Input::get('longitude'),'towerprovider'=>strtoupper(Input::get('towerprovider')),'infratype'=>strtoupper(Input::get('infratype')),'kode_tower_belakang'=>strtoupper(Input::get('kode_tower_belakang')),'kode_tower_depan'=>strtoupper(Input::get('kode_tower_depan')),'cluster'=>strtoupper(Input::get('cluster')),'area'=>strtoupper(Input::get('area')),'regional'=>strtoupper(Input::get('regional')),'tower'=>Input::get('tower'),'budget'=>Input::get('budget'),'sis'=>Input::get('sis'),'sitac'=>Input::get('sitac'),'imb'=>Input::get('imb'),'imb_jasa'=>Input::get('imb_jasa'),'lahan'=>Input::get('lahan'),'cme'=>Input::get('cme'),'pln'=>Input::get('pln'),'addcme'=>Input::get('addcme'),'addpln'=>Input::get('addpln'),'addtransport'=>Input::get('addtransport'),'biayatower'=>Input::get('biayatower'),'status_id'=>'0','status'=>'NEW']);
+Project::where('id',$id)->update(['projectid'=>strtoupper(Input::get('projectid')),'mitra'=>strtoupper(Input::get('mitra')),'proc'=>strtoupper(Input::get('proc')),'ubis'=>strtoupper(Input::get('ubis')),'sitename'=>strtoupper(Input::get('sitename')),'siteid'=>strtoupper(Input::get('siteid')),'kabupaten'=>strtoupper(Input::get('kabupaten')),'provinsi'=>strtoupper(Input::get('provinsi')),'latituted'=>Input::get('latituted'),'longitude'=>Input::get('longitude'),'towerprovider'=>strtoupper(Input::get('towerprovider')),'infratype'=>strtoupper(Input::get('infratype')),'kode_tower_belakang'=>strtoupper(Input::get('kode_tower_belakang')),'kode_tower_depan'=>strtoupper(Input::get('kode_tower_depan')),'cluster'=>strtoupper(Input::get('cluster')),'area'=>strtoupper(Input::get('area')),'regional'=>strtoupper(Input::get('regional')),'tower'=>Input::get('tower'),'budget'=>Input::get('budget'),'sis'=>Input::get('sis'),'sitac'=>Input::get('sitac'),'imb'=>Input::get('imb'),'imb_jasa'=>Input::get('imb_jasa'),'lahan'=>Input::get('lahan'),'cme'=>Input::get('cme'),'pln'=>Input::get('pln'),'addcme'=>Input::get('addcme'),'addpln'=>Input::get('addpln'),'addtransport'=>Input::get('addtransport'),'biayatower'=>Input::get('biayatower'),'status_id'=>'0','status'=>Input::get('status')]);
 return response()->json(['success'=>'Perubahan data Project Berhasil']);
          }
          else
@@ -3187,8 +3188,7 @@ return response()->json(['dataA'=>[$HAJan, $HAFeb, $HAMar, $HAApr , $HAMay, $HAJ
     public function ApprovalProjectRevisi(Request $request)
     {
 		$valid = $this->validate($request, [
-		 'id' => 'required|numeric|not_in:0',
-		 'projectimplementationid' => 'required|numeric|not_in:0',
+		 'id' => 'required|numeric|not_in:0', 
 		 'projectid' => 'required|max:200',
          'status' => 'required',
          'budget' => 'required|numeric',
@@ -3225,7 +3225,17 @@ return response()->json(['dataA'=>[$HAJan, $HAFeb, $HAMar, $HAApr , $HAMay, $HAJ
     ]);
 if (!$valid)
     {
-
+if($request->get('status') == 'NEW')
+{
+        $create = ProjectStatus::create(['project_id'=>$request->get('id'),'user_id'=>Auth::guard('karyawan')->user()->id,'status'=>'APPROVED','message'=>$request->get('message')]); 
+Project::where('id',$request->get('id'))->update(['status'=>$request->get('status'),'infratype'=>$request->get('infratype'),'latituted'=>$request->get('latituted'),'longitude'=>$request->get('longitude'),'kabupaten'=>$request->get('kabupaten'),'provinsi'=>$request->get('provinsi'),'towerprovider'=>$request->get('towerprovider'),'kode_tower_belakang'=>$request->get('kode_tower_belakang'),'tower'=>$request->get('tower'),'kode_tower_depan'=>$request->get('kode_tower_depan'),'mitra'=>$request->get('mitra'),'cluster'=>$request->get('cluster'),'regional'=>$request->get('regional'),'area'=>$request->get('area'),'siteid'=>$request->get('siteid'),'sitename'=>$request->get('sitename'),'ubis'=>$request->get('ubis'),'proc'=>$request->get('proc'),'budget'=>$request->get('budget'),'projectid'=>$request->get('projectid'),'imb'=>$request->get('imb'),'imb_jasa'=>$request->get('imb_jasa'),'sitac'=>$request->get('sitac'),'sis'=>$request->get('sis'),'lahan'=>$request->get('lahan'),'qty_lahan'=>$request->get('qty_lahan'),'cme'=>$request->get('cme'),'pln'=>$request->get('pln'),'addtransport'=>$request->get('addtransport'),'addpln'=>$request->get('addpln'),'addcme'=>$request->get('addcme'),'biayatower'=>$request->get('biayatower'),'status_id'=>$create->id,'updated_at'=>Carbon::now()]);
+ProjectImplementations::where('project_implementation_id',$request->get('projectimplementationid'))->delete();
+ProjectImplementationsAddtional::where('project_implementation_id',$request->get('projectimplementationid'))->delete();
+ProjectImplementationsStandard::where('project_implementation_id',$request->get('projectimplementationid'))->delete();
+return response()->json(['success'=>'Perubahan Data Berhasil']);    
+}
+else
+ {
 if($request->get('infratype') == 'UNTAPPED')		
 {
     $create = ProjectStatus::create(['project_id'=>$request->get('id'),'user_id'=>Auth::guard('karyawan')->user()->id,'status'=>'APPROVED','message'=>$request->get('message')]); 
@@ -3264,7 +3274,7 @@ ProjectImplementations::where('id',$request->get('projectimplementationid'))->up
 return response()->json(['success'=>'Perubahan Data Berhasil']);
 	
 }		
-		
+	}	
     }
 else
     {
@@ -3580,8 +3590,7 @@ else
 {
   if($cari->infratype == 'UNTAPPED')
   {
-    $standard = DB::table('vprojectimplementationstandard')->select('id','project_implementation_id','tonase','pondasi','biayatower','erection_tower','transportasi','pondasi_greenfiled','bts_outdoor','me','fy','pln_connect')->where('project_implementation_id',$kode)->first();
-
+    $standard = DB::table('vprojectimplementationstandard')->select('id','project_implementation_id','tonase','pondasi','biayatower','erection_tower','transportasi','pondasi_greenfiled','bts_outdoor','me','fy','pln_connect')->where('project_implementation_id',$kode)->first(); 
   $pesan = DB::table('vprojectstatus')
             ->select('status','created_at', 'name', 'level')
       ->where([['project_id',$id],['status','APPROVED']])
@@ -3596,7 +3605,7 @@ else
   ->orderBy('project_status.id','ASC')->get();
  
 
-return response()->json(['standard'=>$standard,'additional'=>$additional,'pesan'=>$pesan,'pesanlengkap'=>$pesanlengkap,'noprpo'=>$noprpo]);
+return response()->json(['standard'=>$standardNya,'additional'=>$additional,'pesan'=>$pesan,'pesanlengkap'=>$pesanlengkap,'noprpo'=>$noprpo]);
   
   }
   else
@@ -3604,7 +3613,23 @@ return response()->json(['standard'=>$standard,'additional'=>$additional,'pesan'
 $standard = DB::table('vprojectimplementationstandard')->select('id','project_implementation_id','tonase','pondasi','biayatower','erection_tower','transportasi','pondasi_greenfiled','bts_outdoor','me','fy','pln_connect')->where('project_implementation_id',$kode)->first();
 if(empty($standard))
 {
-  return response()->json('error');
+  $standard = ['id'=>0,'project_implementation_id'=>0,'tonase'=>0,'pondasi'=>0,'biayatower'=>0,'erection_tower'=>0,'transportasi'=>0,'pondasi_greenfiled'=>0,'bts_outdoor'=>0,'me'=>0,'fy'=>0,'pln_connect'=>0];
+  $pesan = DB::table('vprojectstatus')
+            ->select('status','created_at', 'name', 'level')
+      ->where([['project_id',$id],['status','APPROVED']])
+            ->orderBy('created_at','ASC')
+      ->get();
+      $noprpo = Nopopr::where('project_id',$id)->orderBy('id','ASC')->get();
+  $additional = DB::table('vprojectimplementationadditional')->select('pekerjaan','satuan','qty','harga','total')->where('project_implementation_id',$kode)->orderBy('id','ASC')->get();
+  $pesanlengkap = DB::table('project_status')
+  ->join('users','project_status.user_id','=','users.id')
+  ->select('project_status.status','project_status.message','project_status.created_at','users.name','users.level')
+  ->where('project_status.project_id',$id)
+  ->orderBy('project_status.id','ASC')->get();
+  
+
+return response()->json(['standard'=>$standard,'additional'=>$additional,'pesan'=>$pesan,'pesanlengkap'=>$pesanlengkap,'noprpo'=>$noprpo]);
+  
 }
 else
 {
@@ -3678,10 +3703,46 @@ return response()->json(['standard'=>$standard,'additional'=>$additional,'pesan'
 $standard = DB::table('vprojectimplementationstandard')->select('id','project_implementation_id','tonase','pondasi','biayatower','erection_tower','transportasi','pondasi_greenfiled','bts_outdoor','me','fy','pln_connect')->where('project_implementation_id',$kode)->first();
 if(empty($standard))
 {
-	return response()->json('error');
+    $standardNya = ['id'=>0,'project_implementation_id'=>0,'tonase'=>0,'pondasi'=>0,'biayatower'=>0,'erection_tower'=>0,'transportasi'=>0,'pondasi_greenfiled'=>0,'bts_outdoor'=>0,'me'=>0,'fy'=>0,'pln_connect'=>0];
+$pesan = DB::table('vprojectstatus')
+            ->select('status','created_at', 'name', 'level')
+            ->where([['project_id',$id],['status','APPROVED']])
+            ->orderBy('created_at','ASC')
+            ->get();
+  $additional = DB::table('vprojectimplementationadditional')->select('pekerjaan','satuan','qty','harga','total')->where('project_implementation_id',$kode)->orderBy('id','ASC')->get();
+  $noprpo = Nopopr::where('project_id',$id)->orderBy('id','ASC')->get();
+  $pesanlengkap = DB::table('project_status')
+  ->join('users','project_status.user_id','=','users.id')
+  ->select('project_status.status','project_status.message','project_status.created_at','users.name','users.level')
+  ->where('project_status.project_id',$id)
+  ->orderBy('project_status.id','ASC')->get();
+  $levelnya = DB::table('project_status')
+  ->join('users','project_status.user_id','=','users.id')
+  ->select('users.level')
+  ->where('project_status.project_id',$id)
+  ->orderBy('project_status.id','desc')->first();
+  if(empty($levelnya))
+  {
+    $levelNya= "ADMINISTRATOR";
+  }
+  else
+  {
+    $levelNya= $levelnya->level;
+  }
+$vtower = DB::table('vdistinsstandartimplementationtower')->where('regional',$regional)->select('tower')->get();
+$vcluster = DB::table('vdistinsstandartimplementationcluster')->where('regional',$regional)->select('cluster')->get();
+$sregional = DB::table('vplafon_capex_regional')->where([['infratype',$cari->infratype],['regional',$regional]])->select('budgetNya','capexNya','total')->first();
+if(count($sregional)>0){$sr=$sregional;}else{$sr=['budgetNya'=>0,'capexNya'=>0,'total'=>0];}
+    $sarea = DB::table('vplafon_capex_area')->where([['infratype',$cari->infratype],['area',$area]])->select('budgetNya','capexNya','total')->first();
+if(count($sarea)>0){$sa=$sarea;}else{$sa=['budgetNya'=>0,'capexNya'=>0,'total'=>0];}
+$snasional = DB::table('vplafon_capex_nasional')->where('infratype',$cari->infratype)->select('budgetNya','capexNya','total')->first();
+if(count($snasional)>0){$sn=$snasional;}else{$sn=['budgetNya'=>0,'capexNya'=>0,'total'=>0];}
+$simulasi = ['regional'=>$sr,'area'=>$sa,'nasional'=>$sn];
+
+    return response()->json(['standard'=>$standardNya,'additional'=>$additional,'pesan'=>$pesan,'pesanlengkap'=>$pesanlengkap,'levelnya'=>$levelNya,'vtower'=>$vtower,'vcluster'=>$vcluster,'simulasi'=>$simulasi,'noprpo'=>$noprpo]);
 }
 else
-{
+{ 
 	$pesan = DB::table('vprojectstatus')
             ->select('status','created_at', 'name', 'level')
 			->where([['project_id',$id],['status','APPROVED']])
@@ -3709,7 +3770,6 @@ $snasional = DB::table('vplafon_capex_nasional')->where('infratype',$cari->infra
 if(count($snasional)>0){$sn=$snasional;}else{$sn=['budgetNya'=>0,'capexNya'=>0,'total'=>0];}
 $simulasi = ['regional'=>$sr,'area'=>$sa,'nasional'=>$sn];
 return response()->json(['standard'=>$standard,'additional'=>$additional,'pesan'=>$pesan,'pesanlengkap'=>$pesanlengkap,'levelnya'=>$levelnya->level,'vtower'=>$vtower,'vcluster'=>$vcluster,'simulasi'=>$simulasi,'noprpo'=>$noprpo]);
-   
 }
 }
 }      

@@ -7,9 +7,9 @@
   <meta name="keywords" content="el-RAVTING (Electronic Review Approval Budgeting)">
   <meta name="description" content="el-RAVTING (Electronic Review Approval Budgeting)">
   <meta name="csrf-token" content="{{ csrf_token() }}">
-  <link rel="stylesheet" href="/public/assets/bootstrap/css/bootstrap.min.css">
-  <link rel="stylesheet" href="/public/assets/flat-icon/flaticon.css">
-  <link rel="stylesheet" href="/public/temp/styles/styles.css">
+  <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/assets/flat-icon/flaticon.css">
+  <link rel="stylesheet" href="/temp/styles/styles.css">
     <!-- Scripts -->
     <script>
         window.Laravel = {!! json_encode([
@@ -29,7 +29,7 @@
 
 	<div class="container">
     <div class="row" align="center">
-		<img src="/public/assets/images/e-mapping.png" class="img-responsive" alt="el-RAVTING (Electronic Review Approval Budgeting)" align="center">
+		<img src="/assets/images/e-mapping.png" class="img-responsive" alt="el-RAVTING (Electronic Review Approval Budgeting)" align="center">
 
         <div class="col-md-4">
 		</div>
@@ -116,9 +116,9 @@
     
   
 
-  <script src="/public/assets/jquery/jquery-3.2.1.min.js"></script>
-  <script src="/public/assets/bootstrap/js/bootstrap.min.js"></script>
- <script src="{{ asset('/public/js/app.js') }}"></script>
+  <script src="/assets/jquery/jquery-3.2.1.min.js"></script>
+  <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
+ <script src="{{ asset('/js/app.js') }}"></script>
 
 </body>
 </html>
